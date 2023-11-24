@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:home_widget/home_widget.dart';
 
 import 'article_screen.dart';
 import 'news_data.dart';
+
+// todo: implement the ios side
+const String appGroupId = '[APP GROUP ID]';
+const String iOSWidgetName = 'NewsWidgets';
+const String androidWidgetName = 'NewsWidgets';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -9,7 +15,26 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+void updateHeadline(NewsArticle newHeadline) {
+  HomeWidget.saveWidgetData<String>('headline_title', newHeadline.title);
+  HomeWidget.saveWidgetData<String>(
+      'headline_description', newHeadline.description);
+  HomeWidget.updateWidget(
+      iOSName: iOSWidgetName, androidName: androidWidgetName);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    // TODO: ios setup
+    // HomeWidget.setAppGroupId(appGroupId);
+
+    final newHeadline = getNewsStories()[0];
+    updateHeadline(newHeadline);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
